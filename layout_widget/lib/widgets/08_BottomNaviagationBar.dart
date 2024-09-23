@@ -36,26 +36,28 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: getPage(),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.blueGrey,
         onTap: (index) {
           // 사용자가 선택한 메뉴에 대한 정보
           setState(() {
             _curIndex = index;
           }); // => build 함수를 다시 호출
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            backgroundColor: Colors.blue,
-            icon: Icon(Icons.home, size: 30),
+            icon: Icon(Icons.home,
+                size: 30, color: _curIndex == 0 ? Colors.blue : Colors.black54),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            backgroundColor: Colors.red,
-            icon: Icon(Icons.search, size: 30),
+            icon: Icon(Icons.search,
+                size: 30, color: _curIndex == 1 ? Colors.red : Colors.black54),
             label: 'Search',
           ),
           BottomNavigationBarItem(
-            backgroundColor: Colors.green,
-            icon: Icon(Icons.settings, size: 30),
+            icon: Icon(Icons.settings,
+                size: 30,
+                color: _curIndex == 2 ? Colors.green : Colors.black54),
             label: 'Settings',
           )
         ],
