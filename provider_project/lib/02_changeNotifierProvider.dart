@@ -27,12 +27,21 @@ class MyHomePage extends StatelessWidget {
         ),
         body: Center(
           //context.watch<Counter>() = Counter 객체
-          child:
-              Text('현재 숫자 : ${context.watch<Counter>().count}'), // watch : 출력
+          child: Text(
+            //'현재 숫자 : ${context.watch<Counter>().count}',
+            '현재 숫자 : ${Provider.of<Counter>(context).count}',
+            style: TextStyle(
+              fontSize: 50.0,
+            ),
+          ), // watch : 출력
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () =>
-              context.read<Counter>().incrementCount(), // read : 변경
+          onPressed: () {
+            //context.read<Counter>().incrementCount(), // read : 변경
+            // Counter providerData = context.read<Counter>();
+            Counter providerData = Provider.of<Counter>(context, listen: false);
+            providerData.incrementCount();
+          },
           child: Icon(Icons.add),
         ));
   }
