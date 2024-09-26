@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project_hss/provider/loginProvider.dart';
+import 'package:provider/provider.dart';
 import '../models/member.dart';
 import '../mapper/MemberDBHelper.dart';
 
@@ -57,38 +59,104 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           String id = _idEditingController.text;
                           String pwd = _pwdEditingController.text;
 
-                          Member? _member =
-                              await widget.dbHelper.login(id, pwd);
+                          Member _member = await widget.dbHelper.login(id, pwd);
 
-                          if (_member == null) {
+                          print(
+                              '============================================= ${_member.id} / ${_member.pwd}');
+
+                          if (_member.id.isEmpty) {
+                            print('1111111111111111111111111111');
+                            AlertDialog(
+                              title: Text('제목'),
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  //List Body를 기준으로 Text 설정
+                                  children: <Widget>[
+                                    Text('Alert Dialog 입니다'),
+                                    Text('OK를 눌러 닫습니다'),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: Text('확인'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('취소'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
                           } else {
+                            print('222222222222222222222222222222');
+                            Provider.of<LoginProvider>(context, listen: false)
+                                .login(id);
                             Navigator.pushNamedAndRemoveUntil(
-                                context, '/list', (route) => false,
-                                arguments: id);
+                                context, '/list', (route) => false);
                           }
                         }
                       },
-                      child: Text('로그인')),
-                  TextButton(
+                      style: ElevatedButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                        '로그인',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ElevatedButton(
                       onPressed: () {
                         Navigator.pushNamed(context, '/join');
                       },
-                      child: Text('회원가입')),
-                  TextButton(
+                      style: ElevatedButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                        '회원가입',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: Text('돌아가기')),
-                ],
+                      style: ElevatedButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                        '돌아가기',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

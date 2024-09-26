@@ -53,8 +53,27 @@ class MemberDBHelper {
     if (result.isEmpty) {
       return Member(id: '', pwd: '');
     } else {
-      Map<String, dynamic>? member = result.first;
+      Map<String, dynamic> member = result.first;
       return Member.from(member);
     }
+  }
+
+  // 내정보
+  Future<Member> getMemberInfo(String id) async {
+    Database db = await database;
+    List<Map<String, dynamic>> result = await db.query(
+      'members',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    Map<String, dynamic> member = result.first;
+    return Member.from(member);
+  }
+
+  // 수정
+  Future<int> updateMember(Member member) async {
+    Database db = await database;
+    return await db.update('members', member.toMap(),
+        where: 'id =?', whereArgs: [member.id]);
   }
 }

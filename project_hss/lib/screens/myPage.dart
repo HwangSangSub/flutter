@@ -2,21 +2,37 @@ import 'package:flutter/material.dart';
 import '../mapper/MemberDBHelper.dart';
 import '../models/member.dart';
 
-class JoinPage extends StatefulWidget {
+class MyPage extends StatefulWidget {
   final MemberDBHelper dbHelper = MemberDBHelper();
   @override
-  State<JoinPage> createState() => _JoinPageState();
+  State<MyPage> createState() => _MyPageState();
 }
 
-class _JoinPageState extends State<JoinPage> {
+class _MyPageState extends State<MyPage> {
   final TextEditingController _idEditingController = TextEditingController();
   final TextEditingController _pwdEditingController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  late String id;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies;
+    ModalRoute.of(context);
+    // Navigator로 넘겨 받은 arguments를 담은 객체
+    final arguments = ModalRoute.of(context)!.settings.arguments;
+    if (arguments != null) {
+      id = arguments as String; // int로 casting
+
+      widget.dbHelper.getMemberInfo(id).then((result) {
+        _idEditingController.text = result.id;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('회원 가입')),
+      appBar: AppBar(title: Text('마이 페이지')),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 50, horizontal: 10),
         child: Column(
@@ -28,28 +44,22 @@ class _JoinPageState extends State<JoinPage> {
                 children: [
                   TextFormField(
                     controller: _idEditingController,
+                    enabled: false,
                     decoration: InputDecoration(
-                      labelText: '등록할 아이디',
+                      labelText: ' 아이디',
                       border: OutlineInputBorder(),
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '비밀번호를 입력하세요.';
-                      } else {
-                        return null;
-                      }
-                    },
                   ),
                   SizedBox(height: 10),
                   TextFormField(
                     controller: _pwdEditingController,
                     decoration: InputDecoration(
-                      labelText: '등록할 비밀번호',
+                      labelText: '변경할 비밀번호',
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return '아이디를 입력하세요.';
+                        return '변경할 비밀번호를 입력하세요.';
                       } else {
                         return null;
                       }
@@ -71,8 +81,7 @@ class _JoinPageState extends State<JoinPage> {
 
                       Member member = Member(id: id, pwd: pwd);
 
-                      int result = await widget.dbHelper.insertMember(member);
-                      print('result : ${result}');
+                      int result = await widget.dbHelper.updateMember(member);
                       if (result > 0) {
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/list', (route) => false,
@@ -87,7 +96,7 @@ class _JoinPageState extends State<JoinPage> {
                     ),
                   ),
                   child: Text(
-                    '회원가입',
+                    '수정',
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
