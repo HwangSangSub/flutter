@@ -1,0 +1,16 @@
+// 게시판 테이블
+CREATE TABLE "boards" (
+	"bno"	INTEGER,
+	"title"	TEXT,
+	"content"	TEXT,
+	"writer"	TEXT,
+	PRIMARY KEY("bno" AUTOINCREMENT)
+);
+
+// 회원 테이블
+CREATE TABLE "members" (
+	"id"	TEXT,
+	"pwd"	TEXT,
+	"roll"	TEXT,
+	PRIMARY KEY("id")
+);

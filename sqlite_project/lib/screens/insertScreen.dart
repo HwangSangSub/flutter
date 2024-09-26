@@ -1,13 +1,12 @@
 // lib/screens/insertScreen.dart
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import '../mappers/MemoDBHelper.dart' as MemoDBHelper;
 import '../models/memo.dart' as memoModel;
 
 class InsertScreen extends StatefulWidget {
   final MemoDBHelper.MemoDBHelper dbHelper = MemoDBHelper.MemoDBHelper();
   @override
-  _InsertScreenState createState() => _InsertScreenState();
+  State<InsertScreen> createState() => _InsertScreenState();
 }
 
 class _InsertScreenState extends State<InsertScreen> {
@@ -17,7 +16,7 @@ class _InsertScreenState extends State<InsertScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('메모등록'),
+        title: Text('메모 등록'),
       ),
       body: Padding(
           padding: EdgeInsets.symmetric(vertical: 50, horizontal: 10),

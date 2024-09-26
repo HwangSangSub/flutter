@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import '../mappers/MemoDBHelper.dart' as MemoDBHelper;
 import '../models/memo.dart' as memoModel;
+import './updateScreen.dart' as updateScreen;
 
 class ReadScreen extends StatefulWidget {
   final MemoDBHelper.MemoDBHelper dbHelper = MemoDBHelper.MemoDBHelper();
@@ -76,6 +77,12 @@ class _ReadScreenState extends State<ReadScreen> {
             style: TextStyle(
               fontSize: 30,
             ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/memo/update', arguments: memo.no);
+            },
+            child: Text('수정'),
           ),
         ],
       ),

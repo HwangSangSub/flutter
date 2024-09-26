@@ -45,7 +45,7 @@ class _ListScreenState extends State<ListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('메모목록')),
+      appBar: AppBar(title: Text('메모 목록')),
       body: ListView.builder(
         // 실제 리스트 크기만큼 item을 생성 : 테스트할때 몇개까지 출력되면 overflow가 일어나는지 할때도 사용
         itemCount: _memoList.length,
@@ -62,8 +62,8 @@ class _ListScreenState extends State<ListScreen> {
                 if (result > 0) {
                   // 삭제한게 한건이라도 있으면 OK
                   setState(() {
-                    // _memoList.removeAt(index);
-                    _memoList.removeWhere((info) => info.no == memo.no);
+                    // _memoList.removeAt(index); // 어떤 index인지 정확하지 않으니 아래의 방법으로 처리한다.
+                    _memoList.removeWhere((info) => info.no == memo.no); // 개별개별 값을 확인해서 해당하는거를 목록에서 지운다.
                   });
                 }
               },

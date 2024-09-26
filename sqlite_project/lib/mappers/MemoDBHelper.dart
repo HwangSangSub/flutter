@@ -82,7 +82,7 @@ class MemoDBHelper {
   }
 
   // 수정
-  Future<int> update(Memo memo) async {
+  Future<int> updateMemo(Memo memo) async {
     Database db = await database;
     return await db.update(
         'memos', // 테이블명

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './screens/listScreen.dart' as listScreen;
 import './screens/insertScreen.dart' as insertScreen;
 import './screens/readScreen.dart' as readScreen;
+import './screens/updateScreen.dart' as updateScreen;
 
 void main() => runApp(MyApp());
 
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
         // 등록
         '/memo/insert': (context) => insertScreen.InsertScreen(),
         // 수정
+        '/memo/update': (context) => updateScreen.UpdateScreen(),
       },
     );
   }
