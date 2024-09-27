@@ -11,6 +11,5 @@ CREATE TABLE "boards" (
 CREATE TABLE "members" (
 	"id"	TEXT,
 	"pwd"	TEXT,
-	"roll"	TEXT,
 	PRIMARY KEY("id")
 );

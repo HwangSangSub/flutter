@@ -72,7 +72,6 @@ class _JoinPageState extends State<JoinPage> {
                       Member member = Member(id: id, pwd: pwd);
 
                       int result = await widget.dbHelper.insertMember(member);
-                      print('result : ${result}');
                       if (result > 0) {
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/list', (route) => false,

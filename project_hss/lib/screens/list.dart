@@ -13,6 +13,8 @@ class ListPage extends StatefulWidget {
 
 class _ListPageState extends State<ListPage> {
   List<Board> _boardList = [];
+  List<Board> _searchBoardList = []; // 검색결과 리스트
+  String _search = '';
 
   @override
   void initState() {
@@ -20,7 +22,17 @@ class _ListPageState extends State<ListPage> {
     widget.dbHelper.getBoards().then((result) {
       setState(() {
         _boardList = result;
+        _searchBoardList = _boardList;
       });
+    });
+  }
+
+  void _searchBoard(String search) {
+    setState(() {
+      _search = search;
+      _searchBoardList = _boardList
+          .where((board) => board.title.contains(search))
+          .toList(); //제목 검색어 결과 확인
     });
   }
 
@@ -36,6 +48,23 @@ class _ListPageState extends State<ListPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('게시글 목록'),
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(80.0), // 검색창 높이 설정
+          child: Padding(
+              padding: const EdgeInsets.all(10.0), // 검색창 양쪽 길이
+              child: TextField(
+                onChanged: (value) {
+                  _searchBoard(value); // 검색어가 변경될 때마다 값보여주기
+                },
+                decoration: InputDecoration(
+                  hintText: '검색',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0), //검색창 굴곡
+                  ),
+                  prefixIcon: Icon(Icons.search),
+                ),
+              )),
+        ),
         actions: [
           Visibility(
             visible: (userId != null ? false : true),
@@ -81,9 +110,9 @@ class _ListPageState extends State<ListPage> {
         ],
       ),
       body: ListView.builder(
-        itemCount: _boardList.length,
+        itemCount: _searchBoardList.length,
         itemBuilder: (context, index) {
-          Board board = _boardList[index];
+          Board board = _searchBoardList[index];
           return Card(
             elevation: 2,
             margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -125,7 +154,12 @@ class _ListPageState extends State<ListPage> {
                     visible: (userId == board.writer ? true : false),
                     child: IconButton(
                       icon: Icon(Icons.delete_forever),
-                      onPressed: () {},
+                      onPressed: () {
+                        widget.dbHelper.deleteBoard(board.bno as int);
+                        setState(() {
+                          _searchBoardList.removeAt(index);
+                        });
+                      },
                     ),
                   ),
                   IconButton(

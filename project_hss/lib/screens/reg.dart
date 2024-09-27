@@ -19,7 +19,7 @@ class _RegPageState extends State<RegPage> {
 
   @override
   Widget build(BuildContext context) {
-    String? userId = Provider.of<LoginProvider>(context).loginId;
+    String? userId = Provider.of<LoginProvider>(context, listen: false).loginId;
 
     return Scaffold(
       appBar: AppBar(

@@ -71,39 +71,31 @@ class _LoginPageState extends State<LoginPage> {
 
                           Member _member = await widget.dbHelper.login(id, pwd);
 
-                          print(
-                              '============================================= ${_member.id} / ${_member.pwd}');
-
-                          if (_member.id.isEmpty) {
-                            print('1111111111111111111111111111');
-                            AlertDialog(
-                              title: Text('제목'),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  //List Body를 기준으로 Text 설정
-                                  children: <Widget>[
-                                    Text('Alert Dialog 입니다'),
-                                    Text('OK를 눌러 닫습니다'),
-                                  ],
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  child: Text('확인'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                TextButton(
-                                  child: Text('취소'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
+                          if (_member.id == '') {
+                            showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (BuildContext ctx) {
+                                  return AlertDialog(
+                                    title: Text('로그인 실패'),
+                                    content: Text('아이디 또는 비밀번호가 일치하지 않습니다.'),
+                                    actions: [
+                                      TextButton(
+                                        child: Text('확인'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text('취소'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
                           } else {
-                            print('222222222222222222222222222222');
                             Provider.of<LoginProvider>(context, listen: false)
                                 .login(id);
                             Navigator.pushNamedAndRemoveUntil(

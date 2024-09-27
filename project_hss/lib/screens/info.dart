@@ -29,8 +29,10 @@ class _InfoPageState extends State<InfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    String? userId = Provider.of<LoginProvider>(context).loginId;
-
+    String? userId = Provider.of<LoginProvider>(context, listen: false).loginId;
+    if (userId == null) {
+      userId = '';
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text('게시글 상세보기'),
@@ -67,7 +69,7 @@ class _InfoPageState extends State<InfoPage> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                '제목: ${board.title}',
+                '${board.title}',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -83,7 +85,7 @@ class _InfoPageState extends State<InfoPage> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                '내용: ${board.content}',
+                '${board.content}',
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.grey[800],
@@ -91,43 +93,51 @@ class _InfoPageState extends State<InfoPage> {
               ),
             ),
             SizedBox(height: 40),
-            Visibility(
-              visible: (userId == board.writer ? true : false),
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/modify',
-                        arguments: board.bno);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Visibility(
+                  visible: (userId == board.writer ? true : false),
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/modify',
+                            arguments: board.bno);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text(
+                        '수정',
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ),
                   ),
-                  child: Text(
-                    '수정',
-                    style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(width: 20),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      '돌아가기',
+                      style: TextStyle(fontSize: 18),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Text(
-                  '돌아가기',
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
+              ],
             ),
           ],
         ),

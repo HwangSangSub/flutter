@@ -35,8 +35,8 @@ class _ModifyPageState extends State<ModifyPage> {
 
   @override
   Widget build(BuildContext context) {
-    String? userId = Provider.of<LoginProvider>(context).loginId;
-
+    String? userId = Provider.of<LoginProvider>(context, listen: false).loginId;
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('게시글 수정'),
