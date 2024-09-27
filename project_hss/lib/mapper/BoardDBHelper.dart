@@ -74,12 +74,25 @@ class BoardDBHelper {
   // 수정
   Future<int> updateBoard(Board board) async {
     Database db = await database;
-    return await db.update('boards', board.toMap(), where: 'bno =?', whereArgs: [board.bno]);
+    return await db.update('boards', board.toMap(),
+        where: 'bno =?', whereArgs: [board.bno]);
   }
 
   // 삭제
   Future<int> deleteBoard(int bno) async {
     Database db = await database;
     return await db.delete('boards', where: 'bno =?', whereArgs: [bno]);
+  }
+
+  // 내글 조회하기
+  Future<List<Board>> getMyBoards(String id) async {
+    Database db = await database;
+    List<Map<String, dynamic>> result = await db.query('boards',
+        where: 'writer = ?', whereArgs: [id], orderBy: 'bno');
+
+    return List.generate(result.length, (index) {
+      Map<String, dynamic> board = result[index];
+      return Board.from(board);
+    });
   }
 }

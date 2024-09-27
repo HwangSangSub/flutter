@@ -48,7 +48,16 @@ class _InfoPageState extends State<InfoPage> {
               return const Center(child: Text('No data found'));
             } else {
               var result = snapshot.data;
-              return _boardContent(result as Board, userId as String);
+              return Column(
+                children: [
+                  Expanded(
+                    child: _boardContent(result as Board,
+                        userId as String), // 데이터를 _boardContent로 넘김
+                  ),
+                  _bottomButtons(context, userId,
+                      result as Board), // Board 객체를 bottomSheet에 넘김
+                ],
+              );
             }
           }),
     );
@@ -92,55 +101,57 @@ class _InfoPageState extends State<InfoPage> {
                 ),
               ),
             ),
-            SizedBox(height: 40),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Visibility(
-                  visible: (userId == board.writer ? true : false),
-                  child: Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/modify',
-                            arguments: board.bno);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: Text(
-                        '수정',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 20),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      '돌아가기',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _bottomButtons(BuildContext context, String userId, Board board) {
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Visibility(
+            visible: (userId == board.writer
+                ? true
+                : false), // Adjust this as needed
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/modify',
+                    arguments: bno); // Pass the board number
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                '수정',
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+          ),
+          SizedBox(width: 20),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: Text(
+              '돌아가기',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+        ],
       ),
     );
   }
